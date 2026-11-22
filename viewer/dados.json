@@ -1,0 +1,49 @@
+{
+  "_comentario": "EXEMPLO FICTÍCIO. A IA deve sobrescrever este arquivo com os dados reais do Relatório de Validação.",
+  "ideia": "Alternativa brasileira a um gerador de propostas comerciais",
+  "data": "2026-11-21",
+  "fonte": "Exemplo fictício (substituir pela fonte real: DataForSEO, CSV do Keyword Planner etc.)",
+  "veredito": "PIVOTAR",
+  "resumo": "O termo principal é dominado por sites grandes, mas há cauda longa por profissão com KD baixo e CPC alto. Entrar por modelos de proposta por nicho e um gerador gratuito.",
+  "palavras": [
+    { "termo": "modelo de proposta comercial", "volume": 9900, "kd": 41, "cpc": 2.1, "intencao": "Informacional", "forcaTop10": "Alta" },
+    { "termo": "gerador de proposta comercial", "volume": 1300, "kd": 22, "cpc": 6.8, "intencao": "Transacional", "forcaTop10": "Baixa" },
+    { "termo": "proposta comercial para designer", "volume": 880, "kd": 14, "cpc": 4.9, "intencao": "Comercial", "forcaTop10": "Baixa" },
+    { "termo": "software de propostas", "volume": 590, "kd": 33, "cpc": 9.4, "intencao": "Transacional", "forcaTop10": "Média" },
+    { "termo": "proposta comercial para social media", "volume": 720, "kd": 11, "cpc": 3.6, "intencao": "Comercial", "forcaTop10": "Baixa" },
+    { "termo": "como fazer proposta comercial", "volume": 4400, "kd": 38, "cpc": 1.2, "intencao": "Informacional", "forcaTop10": "Alta" },
+    { "termo": "proposta comercial para fotógrafo", "volume": 390, "kd": 9, "cpc": 3.1, "intencao": "Comercial", "forcaTop10": "Baixa" },
+    { "termo": "alternativa ao concorrente x", "volume": 210, "kd": 18, "cpc": 7.5, "intencao": "Comercial", "forcaTop10": "Baixa" }
+  ],
+  "scorecard": [
+    { "criterio": "Volume consistente por cluster", "ok": true },
+    { "criterio": "KD abaixo de 30–35 nos termos-alvo", "ok": true },
+    { "criterio": "CPC acima de R$ 3", "ok": true },
+    { "criterio": "2 ou 3 sites com DR < 35 no top 10", "ok": true },
+    { "criterio": "Termo principal acessível", "ok": false }
+  ],
+  "concorrente": {
+    "nome": "Concorrente X",
+    "paginas": [
+      { "url": "/modelos/proposta-comercial", "termo": "modelo de proposta comercial", "trafego": 6200 },
+      { "url": "/blog/como-fazer-proposta", "termo": "como fazer proposta comercial", "trafego": 3100 },
+      { "url": "/modelos/proposta-designer", "termo": "proposta comercial para designer", "trafego": 540 }
+    ],
+    "fraquezas": [
+      "Cobra em dólar e não aceita Pix",
+      "Modelos genéricos, sem versão por profissão em português",
+      "Editor lento no celular"
+    ],
+    "reclamacoes": [
+      { "texto": "Preço em dólar ficou caro com o câmbio", "fonte": "Reclame Aqui" },
+      { "texto": "Não emite nota fiscal brasileira", "fonte": "Reddit" },
+      { "texto": "Interface em inglês confunde o cliente final", "fonte": "G2" }
+    ]
+  },
+  "cunha": {
+    "tipo": "Micro-ferramenta gratuita + SEO programático",
+    "descricao": "Gerador gratuito de proposta em PDF, com páginas de modelo por profissão (designer, social media, fotógrafo…) apontando para ele.",
+    "termos": ["gerador de proposta comercial", "proposta comercial para designer", "proposta comercial para social media"]
+  },
+  "proximoPasso": "Aprova avançar para a Fase 3 (engenharia reversa funcional e PRD)?"
+}

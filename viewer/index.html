@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Relatório de Validação</title>
+<style>
+  :root {
+    --fundo: #FAFAF7; --superficie: #FFFFFF; --texto: #17181A; --texto-suave: #5F6368;
+    --borda: #E4E2DC; --destaque: #E8A317; --destaque-texto: #17181A;
+    --go: #1E7B45; --pivotar: #B26B00; --nogo: #B42318;
+    --f-titulo: system-ui, sans-serif; --f-texto: system-ui, sans-serif; --f-num: ui-monospace, monospace;
+    --raio: 6px;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--fundo); color: var(--texto); font: 15px/1.55 var(--f-texto); }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 32px 24px 64px; }
+  header { display: flex; align-items: center; gap: 14px; padding-bottom: 20px; border-bottom: 1px solid var(--borda); }
+  header img { height: 32px; width: auto; }
+  header .marca { font-weight: 600; }
+  header .meta { margin-left: auto; text-align: right; color: var(--texto-suave); font-size: 13px; }
+  h1 { font: 650 28px/1.25 var(--f-titulo); margin: 28px 0 6px; letter-spacing: -.01em; }
+  h2 { font: 600 18px/1.3 var(--f-titulo); margin: 0 0 4px; }
+  .sub { color: var(--texto-suave); font-size: 13px; margin: 0 0 16px; }
+  section { margin-top: 40px; }
+
+  .veredito { display: grid; grid-template-columns: auto 1fr; gap: 20px; align-items: start; margin-top: 20px;
+              background: var(--superficie); border: 1px solid var(--borda); border-radius: var(--raio); padding: 20px 22px; }
+  .selo { font: 700 15px/1 var(--f-titulo); letter-spacing: .02em; padding: 10px 14px; border-radius: var(--raio); color: #fff; white-space: nowrap; }
+  .selo.GO { background: var(--go); } .selo.PIVOTAR { background: var(--pivotar); } .selo.NO-GO { background: var(--nogo); }
+  .veredito p { margin: 0; font-size: 16px; }
+
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--borda); border-bottom: 1px solid var(--borda); margin-top: 24px; }
+  .kpi { padding: 14px 0; } .kpi + .kpi { padding-left: 18px; border-left: 1px solid var(--borda); }
+  .kpi .k { font-size: 12px; color: var(--texto-suave); }
+  .kpi .v { font: 600 24px/1.2 var(--f-num); margin-top: 2px; }
+
+  .barras .linha { display: grid; grid-template-columns: minmax(180px, 30%) 1fr 64px; gap: 12px; align-items: center; padding: 5px 0; font-size: 14px; }
+  .barras .trilho { height: 12px; background: color-mix(in srgb, var(--borda) 55%, transparent); border-radius: 2px; }
+  .barras .fill { height: 100%; background: color-mix(in srgb, var(--texto-suave) 45%, transparent); border-radius: 2px; }
+  .barras .fill.alvo { background: var(--destaque); }
+  .barras .n { text-align: right; font-family: var(--f-num); color: var(--texto-suave); }
+  .legenda { font-size: 12px; color: var(--texto-suave); margin-top: 8px; }
+  .legenda i { display: inline-block; width: 10px; height: 10px; background: var(--destaque); border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+
+  .tabela { width: 100%; border-collapse: collapse; background: var(--superficie); border: 1px solid var(--borda); border-radius: var(--raio); overflow: hidden; font-size: 14px; }
+  .tabela th { text-align: left; font-weight: 600; font-size: 12px; color: var(--texto-suave); padding: 10px 12px; border-bottom: 1px solid var(--borda); }
+  .tabela td { padding: 9px 12px; border-bottom: 1px solid var(--borda); }
+  .tabela tr:last-child td { border-bottom: 0; }
+  .tabela td.num { font-family: var(--f-num); text-align: right; } .tabela th.num { text-align: right; }
+  .tabela tr.alvo td:first-child { box-shadow: inset 3px 0 0 var(--destaque); }
+
+  .duas { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  ul.limpa { list-style: none; margin: 0; padding: 0; }
+  ul.limpa li { padding: 9px 0; border-bottom: 1px solid var(--borda); }
+  ul.limpa li small { display: block; color: var(--texto-suave); font-size: 12px; }
+  .check { font-family: var(--f-num); margin-right: 8px; }
+  .check.sim { color: var(--go); } .check.nao { color: var(--nogo); }
+
+  .cunha { background: var(--superficie); border: 1px solid var(--borda); border-radius: var(--raio); padding: 20px 22px; }
+  .cunha .tipo { font-weight: 600; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .tags span { font-size: 13px; border: 1px solid var(--borda); border-radius: var(--raio); padding: 3px 8px; }
+
+  .proximo { margin-top: 40px; padding: 18px 22px; border-left: 3px solid var(--destaque); background: var(--superficie); font-size: 16px; }
+  .erro { padding: 24px; border: 1px solid var(--nogo); border-radius: var(--raio); color: var(--nogo); background: var(--superficie); }
+
+  @media (max-width: 760px) {
+    .kpis { grid-template-columns: 1fr 1fr; } .kpi:nth-child(3) { padding-left: 0; border-left: 0; }
+    .duas { grid-template-columns: 1fr; }
+    .barras .linha { grid-template-columns: 1fr 52px; } .barras .trilho { grid-column: 1 / -1; grid-row: 2; }
+    .tabela .opc { display: none; }
+  }
+  @media print { body { background: #fff; } .proximo, .cunha, .veredito, .tabela { break-inside: avoid; } }
+</style>
+</head>
+<body>
+<div class="wrap" id="app"><p class="sub">Carregando relatório…</p></div>
+
+<script>
+(async () => {
+  const app = document.getElementById("app");
+  const el = (tag, attrs = {}, ...kids) => {
+    const n = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs)) k === "class" ? (n.className = v) : n.setAttribute(k, v);
+    for (const k of kids.flat()) n.append(k instanceof Node ? k : document.createTextNode(String(k ?? "")));
+    return n;
+  };
+  const fmt = (n) => Number(n).toLocaleString("pt-BR");
+  const brl = (n) => Number(n).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+
+  let brand = {}, d;
+  try { brand = await (await fetch("brand.json", { cache: "no-store" })).json(); } catch {}
+  try { d = await (await fetch("dados.json", { cache: "no-store" })).json(); }
+  catch { app.replaceChildren(el("div", { class: "erro" }, "Não encontrei o arquivo dados.json com o relatório.")); return; }
+
+  // Aplica a identidade visual
+  const css = document.documentElement.style;
+  const map = { fundo: "--fundo", superficie: "--superficie", texto: "--texto", textoSuave: "--texto-suave", borda: "--borda",
+                destaque: "--destaque", destaqueTexto: "--destaque-texto", go: "--go", pivotar: "--pivotar", nogo: "--nogo" };
+  for (const [k, v] of Object.entries(brand.cores || {})) if (map[k]) css.setProperty(map[k], v);
+  if (brand.fontes?.titulo) css.setProperty("--f-titulo", brand.fontes.titulo);
+  if (brand.fontes?.texto) css.setProperty("--f-texto", brand.fontes.texto);
+  if (brand.fontes?.numeros) css.setProperty("--f-num", brand.fontes.numeros);
+  if (brand.raio) css.setProperty("--raio", brand.raio);
+  document.title = `Relatório de Validação · ${d.ideia || ""}`;
+
+  const palavras = d.palavras || [];
+  const ehAlvo = (p) => Number(p.kd) < 35 && Number(p.cpc) >= 3;
+  const alvos = palavras.filter(ehAlvo);
+  const volAlvo = alvos.reduce((s, p) => s + Number(p.volume || 0), 0);
+  const cpcMedio = alvos.length ? alvos.reduce((s, p) => s + Number(p.cpc), 0) / alvos.length : 0;
+  const okScore = (d.scorecard || []).filter((s) => s.ok).length;
+  const veredito = String(d.veredito || "").toUpperCase();
+
+  // Cabeçalho
+  const header = el("header", {},
+    brand.logo ? el("img", { src: brand.logo, alt: brand.nome || "" }) : "",
+    el("span", { class: "marca" }, brand.nome || ""),
+    el("div", { class: "meta" }, d.data ? new Date(d.data + "T12:00").toLocaleDateString("pt-BR") : "", el("br"), d.fonte ? `Fonte: ${d.fonte}` : "")
+  );
+
+  // 1. Resumo
+  const resumo = el("div", {},
+    el("h1", {}, d.ideia || "Relatório de Validação"),
+    el("div", { class: "veredito" }, el("span", { class: `selo ${veredito}` }, veredito || "—"), el("p", {}, d.resumo || "")),
+    el("div", { class: "kpis" },
+      el("div", { class: "kpi" }, el("div", { class: "k" }, "Termos analisados"), el("div", { class: "v" }, fmt(palavras.length))),
+      el("div", { class: "kpi" }, el("div", { class: "k" }, "Termos-alvo (KD < 35, CPC ≥ R$ 3)"), el("div", { class: "v" }, fmt(alvos.length))),
+      el("div", { class: "kpi" }, el("div", { class: "k" }, "Buscas/mês nos termos-alvo"), el("div", { class: "v" }, fmt(volAlvo))),
+      el("div", { class: "kpi" }, el("div", { class: "k" }, "CPC médio dos termos-alvo"), el("div", { class: "v" }, brl(cpcMedio)))
+    )
+  );
+
+  // 2. Volume
+  const max = Math.max(1, ...palavras.map((p) => Number(p.volume) || 0));
+  const ordenadas = [...palavras].sort((a, b) => b.volume - a.volume);
+  const titulo2 = alvos.length
+    ? `${alvos.length} de ${palavras.length} termos são alcançáveis por um domínio novo`
+    : "Nenhum termo combina KD baixo com CPC alto";
+  const barras = el("section", {},
+    el("h2", {}, titulo2),
+    el("p", { class: "sub" }, "Volume mensal de busca por termo"),
+    el("div", { class: "barras" }, ordenadas.map((p) =>
+      el("div", { class: "linha" },
+        el("span", {}, p.termo),
+        el("div", { class: "trilho" }, el("div", { class: `fill${ehAlvo(p) ? " alvo" : ""}`, style: `width:${(p.volume / max) * 100}%` })),
+        el("span", { class: "n" }, fmt(p.volume))
+      ))),
+    el("div", { class: "legenda" }, el("i"), "termo-alvo: KD abaixo de 35 e CPC de R$ 3 ou mais")
+  );
+
+  // 3. Tabela
+  const tabela = el("section", {},
+    el("h2", {}, "Oportunidades de busca"),
+    el("p", { class: "sub" }, "Ordenadas por volume"),
+    el("table", { class: "tabela" },
+      el("thead", {}, el("tr", {},
+        el("th", {}, "Termo"), el("th", { class: "num" }, "Volume"), el("th", { class: "num" }, "KD"),
+        el("th", { class: "num" }, "CPC"), el("th", { class: "opc" }, "Intenção"), el("th", { class: "opc" }, "Força do top 10"))),
+      el("tbody", {}, ordenadas.map((p) => el("tr", { class: ehAlvo(p) ? "alvo" : "" },
+        el("td", {}, p.termo), el("td", { class: "num" }, fmt(p.volume)), el("td", { class: "num" }, p.kd),
+        el("td", { class: "num" }, brl(p.cpc)), el("td", { class: "opc" }, p.intencao), el("td", { class: "opc" }, p.forcaTop10))))
+    )
+  );
+
+  // 4. Scorecard e concorrente
+  const c = d.concorrente || {};
+  const blocos = el("section", { class: "duas" },
+    el("div", {},
+      el("h2", {}, `Scorecard: ${okScore} de ${(d.scorecard || []).length} critérios atendidos`),
+      el("p", { class: "sub" }, "Critérios da Fase 1"),
+      el("ul", { class: "limpa" }, (d.scorecard || []).map((s) =>
+        el("li", {}, el("span", { class: `check ${s.ok ? "sim" : "nao"}` }, s.ok ? "✓" : "✗"), s.criterio)))
+    ),
+    el("div", {},
+      el("h2", {}, `Onde ${c.nome || "o concorrente"} é fraco`),
+      el("p", { class: "sub" }, "Fraquezas exploráveis e reclamações de usuários"),
+      el("ul", { class: "limpa" },
+        (c.fraquezas || []).map((f) => el("li", {}, f)),
+        (c.reclamacoes || []).map((r) => el("li", {}, `“${r.texto}”`, el("small", {}, r.fonte))))
+    )
+  );
+
+  const paginas = (c.paginas || []).length ? el("section", {},
+    el("h2", {}, `Páginas que mais trazem tráfego para ${c.nome || "o concorrente"}`),
+    el("p", { class: "sub" }, "Tráfego de problema/solução, sem buscas pela marca"),
+    el("table", { class: "tabela" },
+      el("thead", {}, el("tr", {}, el("th", {}, "Página"), el("th", {}, "Termo principal"), el("th", { class: "num" }, "Tráfego/mês"))),
+      el("tbody", {}, c.paginas.map((p) => el("tr", {}, el("td", {}, p.url), el("td", {}, p.termo), el("td", { class: "num" }, fmt(p.trafego))))))
+  ) : "";
+
+  // 5. Cunha e próximo passo
+  const k = d.cunha || {};
+  const cunha = el("section", {},
+    el("h2", {}, "Por onde entrar no Google"),
+    el("p", { class: "sub" }, "Cunha orgânica dos primeiros 90 dias"),
+    el("div", { class: "cunha" },
+      el("div", { class: "tipo" }, k.tipo || ""), el("p", {}, k.descricao || ""),
+      el("div", { class: "tags" }, (k.termos || []).map((t) => el("span", {}, t))))
+  );
+
+  app.replaceChildren(header, resumo, barras, tabela, blocos, paginas, cunha,
+    d.proximoPasso ? el("div", { class: "proximo" }, d.proximoPasso) : "");
+})();
+</script>
+</body>
+</html>

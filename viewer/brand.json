@@ -1,0 +1,23 @@
+{
+  "_comentario": "Identidade visual do painel. Troque pelos valores oficiais da sua marca. Os valores abaixo são PROVISÓRIOS até a System Bee enviar as cores, fontes e logo oficiais.",
+  "nome": "System Bee",
+  "logo": "",
+  "cores": {
+    "fundo": "#FAFAF7",
+    "superficie": "#FFFFFF",
+    "texto": "#17181A",
+    "textoSuave": "#5F6368",
+    "borda": "#E4E2DC",
+    "destaque": "#E8A317",
+    "destaqueTexto": "#17181A",
+    "go": "#1E7B45",
+    "pivotar": "#B26B00",
+    "nogo": "#B42318"
+  },
+  "fontes": {
+    "titulo": "system-ui, -apple-system, 'Segoe UI', sans-serif",
+    "texto": "system-ui, -apple-system, 'Segoe UI', sans-serif",
+    "numeros": "ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace"
+  },
+  "raio": "6px"
+}
