@@ -4,7 +4,7 @@
 
 🇧🇷 Português | [🇺🇸 English](README.en.md)
 
-Pedir "cria um SaaS igual ao X" para uma IA é fácil, e ela vai obedecer na hora. O difícil é descobrir, antes, se alguém vai achar esse produto. Este prompt trava a IA num pipeline de 4 fases: primeiro ela mostra volume de busca, CPC, dificuldade e as brechas do concorrente; só com o seu "GO" ela especifica e programa.
+Pedir "cria um SaaS igual ao X" para uma IA é fácil, e ela vai obedecer na hora. O difícil é descobrir, antes, se alguém vai achar esse produto. Este prompt trava a IA num pipeline de 4 fases: primeiro ela mostra volume de busca, CPC, dificuldade e as brechas do concorrente, num painel publicado no navegador; só com o seu "GO" ela especifica e programa.
 
 ![As 4 fases: demanda, brechas, especificação e MVP com SEO](cover.png)
 
@@ -31,6 +31,31 @@ Pedir "cria um SaaS igual ao X" para uma IA é fácil, e ela vai obedecer na hor
 2. Dê dados reais para a IA. O ideal é um MCP de SEO (DataForSEO, SE Ranking, Ahrefs, Semrush), mas funciona com CSVs exportados do **Google Keyword Planner** ou do **Search Console**. Sem dados, a IA é instruída a avisar e marcar tudo como estimativa.
 3. Peça: *"Quero criar uma alternativa ao [concorrente]"*. A IA começa pela Fase 1 e entrega o relatório.
 4. Use o **[`templates/RELATORIO-VALIDACAO.md`](templates/RELATORIO-VALIDACAO.md)** para guardar ou preencher o relatório na mão.
+
+## Painel do relatório no ar
+
+Ao terminar o relatório, a IA grava os dados em `viewer/dados.json`, sobe um servidor local e publica o painel com um túnel temporário da Cloudflare. O link só é entregue depois de **5 verificações**:
+
+1. **Serviço local** respondendo em `localhost:4173/health`
+2. **Túnel `cloudflared`** conectado e URL `*.trycloudflare.com` capturada
+3. **DNS propagado** (checado em `1.1.1.1` e `8.8.8.8`, com novas tentativas)
+4. **TLS na porta 443** com certificado válido
+5. **Health check ponta a ponta** pela URL pública, sem 502/503
+
+![Exemplo do painel com dados fictícios](viewer/exemplo-painel.png)
+
+Para rodar na mão (Node.js 18+ e [`cloudflared`](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/)):
+
+```bash
+node viewer/server.mjs      # só local: http://localhost:4173
+node viewer/publicar.mjs    # local + link público, com as 5 verificações
+```
+
+No Windows, o `cloudflared` instala com `winget install --id Cloudflare.cloudflared`.
+
+**Identidade visual:** cores, fontes, logo e raio de borda ficam em [`viewer/brand.json`](viewer/brand.json). O tema padrão é o da System Bee; troque pelos valores da sua marca.
+
+> ⚠️ O link `trycloudflare.com` é público: qualquer pessoa com ele vê o painel. Ele é temporário e some quando você encerra o processo. Não coloque dados sensíveis no relatório.
 
 ## Limites éticos já embutidos
 

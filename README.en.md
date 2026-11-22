@@ -4,7 +4,7 @@
 
 [🇧🇷 Português](README.md) | 🇺🇸 English
 
-Telling an AI "build a SaaS like X" is easy, and it will happily start coding. The hard part is knowing, beforehand, whether anyone will find that product. This prompt locks the AI into a 4-phase pipeline: first it shows search volume, CPC, difficulty and the competitor's weak spots; only after your "GO" does it spec and build.
+Telling an AI "build a SaaS like X" is easy, and it will happily start coding. The hard part is knowing, beforehand, whether anyone will find that product. This prompt locks the AI into a 4-phase pipeline: first it shows search volume, CPC, difficulty and the competitor's weak spots in a dashboard published to your browser; only after your "GO" does it spec and build.
 
 ![The 4 phases (image in Portuguese)](cover.png)
 
@@ -31,6 +31,29 @@ Telling an AI "build a SaaS like X" is easy, and it will happily start coding. T
 2. Give the AI real data. Ideally an SEO MCP (DataForSEO, SE Ranking, Ahrefs, Semrush), but CSV exports from **Google Keyword Planner** or **Search Console** work too. Without data, the AI is told to warn you and mark everything as an estimate.
 3. Ask: *"I want to build an alternative to [competitor]"*. The AI starts at Phase 1 and delivers the report.
 4. Use **[`templates/RELATORIO-VALIDACAO.md`](templates/RELATORIO-VALIDACAO.md)** (Portuguese) to store or fill in the report by hand.
+
+## Report dashboard online
+
+When the report is done, the AI writes the data to `viewer/dados.json`, starts a local server and publishes the dashboard through a temporary Cloudflare tunnel. The link is only handed over after **5 checks**:
+
+1. **Local service** answering on `localhost:4173/health`
+2. **`cloudflared` tunnel** connected and the `*.trycloudflare.com` URL captured
+3. **DNS propagated** (checked on `1.1.1.1` and `8.8.8.8`, with retries)
+4. **TLS on port 443** with a valid certificate
+5. **End-to-end health check** via the public URL, no 502/503
+
+![Example dashboard with fictional data (Portuguese)](viewer/exemplo-painel.png)
+
+To run it by hand (Node.js 18+ and [`cloudflared`](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/)):
+
+```bash
+node viewer/server.mjs      # local only: http://localhost:4173
+node viewer/publicar.mjs    # local + public link, with the 5 checks
+```
+
+**Visual identity:** colors, fonts, logo and border radius live in [`viewer/brand.json`](viewer/brand.json). The default theme is System Bee's; swap in your own brand values.
+
+> ⚠️ The `trycloudflare.com` link is public: anyone with it can see the dashboard. It's temporary and disappears when you stop the process. Don't put sensitive data in the report.
 
 ## Built-in ethical limits
 
